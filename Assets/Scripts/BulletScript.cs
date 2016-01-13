@@ -17,9 +17,10 @@ public class BulletScript : NetworkBehaviour
     {
         if (!base.isServer)
             return;
-
-        StartCoroutine(timeBullet());
+        
         GetComponent<Rigidbody>().velocity += direction * velocity;
+
+        Destroy(gameObject, range); // Destroys the object after range seconds.
     }
 
     void OnCollisionEnter(Collision collision)
@@ -40,18 +41,5 @@ public class BulletScript : NetworkBehaviour
             Instantiate(fragment, fragmentPosition, transform.rotation);
         }
         Destroy(gameObject);
-    }
-
-    IEnumerator timeBullet()
-    {
-        while (true)
-        {
-            if (range <= 0)
-            {
-                Destroy(gameObject);
-            }
-            range--;
-            yield return new WaitForSeconds(1f);
-        }
     }
 }

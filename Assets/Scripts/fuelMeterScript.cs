@@ -53,7 +53,7 @@ public class fuelMeterScript : MonoBehaviour
                 }
                 float fuelPerBar = motor.maxFuel / 5f;
                 int barsOn = Mathf.FloorToInt(fuel / fuelPerBar);
-                for (int i = 0; i < barsOn; i++)
+                for (int i = 0; i < barsOn && i < 5; i++)
                 {
                     display[i].material = materials[1]; //On state
                 }

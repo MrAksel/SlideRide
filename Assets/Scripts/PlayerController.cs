@@ -37,11 +37,12 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetButtonDown("Friction") || Input.GetAxis("FrictionJoystick") > 0)
+        float frictionJoystick = Input.GetAxis("FrictionJoystick");
+        if (Input.GetButton("Friction") || frictionJoystick > 0)
         {
             Motor.DeactivateFriction();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        else // if (Input.GetButtonUp("Friction") || frictionJoystick <= 0)
         {
             Motor.ActivateFriction();
         }
@@ -56,8 +57,8 @@ public class PlayerController : MonoBehaviour
         xAxis = Input.GetAxisRaw("Horizontal");
         zAxis = Input.GetAxisRaw("Vertical");
         Vector3 MovX = transform.right * xAxis;
-        Vector3 MovY = transform.forward * zAxis;
-        Vector3 mov = (MovX + MovY).normalized * acceleration;
+        Vector3 MovZ = transform.forward * zAxis;
+        Vector3 mov = (MovX + MovZ).normalized * acceleration;
         Motor.Move(mov);
 
         //Rotate around the y axis
@@ -74,11 +75,13 @@ public class PlayerController : MonoBehaviour
 
 
         //Jetpack
-        float JumpForce = 0f;
         if (Input.GetButton("Jump"))
         {
-            JumpForce = _JumpForce;
+            Motor.Jump(_JumpForce);
         }
-        Motor.Jump(JumpForce);
+        else
+        {
+            Motor.Jump(0f);
+        }
     }
 }
